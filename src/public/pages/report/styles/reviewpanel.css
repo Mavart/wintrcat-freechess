@@ -116,7 +116,7 @@
 */
 #load-type-dropdown-container {
     position: absolute;
-    top: 60px;
+    top: 8px;
     right: 0px;
     width: 20%;
     height: 50px;
@@ -127,7 +127,7 @@
 @media (max-width: 1264px) and (min-width: 1031px) {
     #load-type-dropdown-container {
         position: absolute;
-        top: 55px;
+        top: 8px;
         right: 0px;
         width: 20%;
         height: 50px;
