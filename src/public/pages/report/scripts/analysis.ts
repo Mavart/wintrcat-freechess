@@ -89,8 +89,8 @@ async function evaluate() {
 
     // Fetch cloud evaluations where possible
     for (let position of positions) {
-        function placeCutoff() {
-            let lastPosition = positions[positions.indexOf(position) - 1];
+        function placeCutoff(pos: Position) {
+            let lastPosition = positions[positions.indexOf(pos) - 1];
             if (!lastPosition) return;
 
             let cutoffWorker = new Stockfish();
@@ -105,9 +105,11 @@ async function evaluate() {
 
         let queryFen = position.fen.replace(/\s/g, "%20");
         let cloudEvaluationResponse;
+        let url = `https://lichess.org/api/cloud-eval?fen=${queryFen}&multiPv=2`;
+        console.log(url)
         try {
             cloudEvaluationResponse = await fetch(
-                `https://lichess.org/api/cloud-eval?fen=${queryFen}&multiPv=2`,
+                url,
                 {
                     method: "GET",
                 },
@@ -119,7 +121,7 @@ async function evaluate() {
         }
 
         if (!cloudEvaluationResponse.ok) {
-            placeCutoff();
+            placeCutoff(position);
             break;
         }
 
@@ -151,7 +153,7 @@ async function evaluate() {
         });
 
         if (position.topLines?.length != 2) {
-            placeCutoff();
+            placeCutoff(position);
             break;
         }
 
