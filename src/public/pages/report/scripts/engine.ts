@@ -1,5 +1,11 @@
 class Stockfish {
 
+   /* private worker = new Worker(
+        typeof WebAssembly == "object"
+        ? "/static/scripts/stockfish-17-single.js"
+        : "/static/scripts/stockfish-17-asm.js"
+    ); */
+
     private worker = new Worker(
         typeof WebAssembly == "object"
         ? "/static/scripts/stockfish-nnue-16.js"

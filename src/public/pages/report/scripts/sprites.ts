@@ -49,7 +49,8 @@ const classificationIcons: {[key: string]: HTMLImageElement | null} = {
     "mistake": null,
     "blunder": null,
     "forced": null,
-    "book": null
+    "book": null,
+    "checkmate": null
 };
 
 for (let classification in classificationIcons) {

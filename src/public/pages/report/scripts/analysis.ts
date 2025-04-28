@@ -340,6 +340,10 @@ async function report() {
     }
 }
 
+$("#review-settings-button").on("click", () => {
+    $("#depth-container").toggle();
+});
+
 $("#review-button").on("click", () => {
     isNewGame = true;
 

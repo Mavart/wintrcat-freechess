@@ -151,6 +151,8 @@ async function drawBoard(fen: string) {
     // Draw pieces
     let fenBoard = fen.split(" ")[0];
     let x = boardFlipped ? 7 : 0, y = x;
+
+    let evaluation = reportResults?.positions[currentMoveIndex]?.topLines?.find(line => line.id == 1)?.evaluation;
     
     for (let character of fenBoard) {
         if (character == "/") {
@@ -159,6 +161,29 @@ async function drawBoard(fen: string) {
         } else if (/\d/g.test(character)) {
             x += parseInt(character) * (boardFlipped ? -1 : 1);
         } else {
+            if(evaluation?.type == 'mate' && evaluation.value == 0) {
+                let player = getMovedPlayer();
+                //red color for mate position
+                if((player == "white" && character === "k") || (player == "black" && character === "K")){
+                        ctx.fillStyle = classificationColours["blunder"];
+                        ctx.fillRect(
+                            x * (BOARD_SIZE / 8), 
+                            y * (BOARD_SIZE / 8), 
+                            (BOARD_SIZE / 8),
+                            (BOARD_SIZE / 8)
+                        );
+/*
+                        ctx.drawImage(
+                            classificationIcons["checkmate"]!,
+                            x * (BOARD_SIZE / 8) + ((68 / 90) * (BOARD_SIZE / 8)), 
+                            y * (BOARD_SIZE / 8) - ((10 / 90) * (BOARD_SIZE / 8)), 
+                            56, 56
+                        ); */
+                }
+                //if(character === "K") console.log( 'white_king in ', x + " " +   y);
+                //if(character === "k") console.log( 'black_king in ', x + " " +   y);
+            }
+            
             ctx.drawImage(
                 pieceImages[character], x * (BOARD_SIZE / 8),
                 y * (BOARD_SIZE / 8),
@@ -262,6 +287,7 @@ function traverseMoves(moveCount: number) {
 
     // Draw board, evaluation bar, update report card
     drawBoard(currentPosition?.fen ?? startingPositionFen);
+    //console.log(currentPosition);
 
     let topLine = currentPosition?.topLines?.find(line => line.id == 1);
     lastEvaluation = topLine?.evaluation ?? { type: "cp", value: 0 }
